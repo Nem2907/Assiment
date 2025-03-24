@@ -1,6 +1,6 @@
 ﻿CREATE DATABASE PizzaStoreDB
 USE PizzaStoreDB
-
+DROP DATABASE PizzaStoreDB
 -- Customers Table
 
 -- Categories Table
@@ -35,6 +35,7 @@ CREATE TABLE Products (
 );
 
 -- Orders Table
+DROP TABLE Orders
 CREATE TABLE Orders(
 	OrderID varchar(10) PRIMARY KEY,
 	AccountID int,
@@ -63,12 +64,18 @@ CREATE TABLE Account (
     UserName VARCHAR(255) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
 	FullName NVARCHAR(255),
-	Phone VARCHAR(15),
-    Email VARCHAR(50),
-    Type INT NOT NULL DEFAULT 2, -- 1 = Staff, 2 = User (Mặc định là User)
-    CONSTRAINT CK_Account_Type CHECK (Type IN (1, 2)) -- Ràng buộc giá trị Type
+	PhoneNumber VARCHAR(15),
+    Email VARCHAR(50), 
+    Role VARCHAR(10) NOT NULL DEFAULT 'user', -- Mặc định là 'user'
+    CONSTRAINT CK_Account_Role CHECK (Role IN ('user', 'admin')) -- Ràng buộc giá trị hợp lệ
 );
-
+-- Insert into Account
+INSERT INTO Account (UserName, Password, FullName, PhoneNumber, Email, Role) VALUES
+('admin', 'admin123', N'Administrator','1122334455','example@gmail.com', 'admin'), 
+('john_doe', 'password123', N'John Doe', '0987654321','user123@yahoo.com','user'),
+('jane_smith', 'jane456', N'Jane Smith','1234567890','contact@domain.com', 'user'),
+('peter_parker', 'spiderman', N'Peter Parker','0977687321','admin@company.org', 'user'),
+('nem', '123456789', N'Nguyễn Hoàng Nem','0706364866','hoangnamlongho@gmail.com', 'admin')
 -- Cart:
 DROP TABLE Cart
 CREATE TABLE Cart (
@@ -164,12 +171,7 @@ INSERT INTO OrderDetails (OrderID, ProductID, UnitPrice, Quantity) VALUES
 
 
 
--- Insert into Account
-INSERT INTO Account (UserName, Password, FullName, Phone, Email, Type) VALUES
-('admin', 'admin123', N'Administrator','1122334455','example@gmail.com', 1), 
-('john_doe', 'password123', N'John Doe', '0987654321','user123@yahoo.com', 2),
-('jane_smith', 'jane456', N'Jane Smith','1234567890','contact@domain.com', 2),
-('peter_parker', 'spiderman', N'Peter Parker','0977687321','admin@company.org', 2);
+
 
 SELECT * FROM Categories
 SELECT * FROM Suppliers

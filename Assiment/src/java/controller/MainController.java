@@ -165,9 +165,14 @@ public class MainController extends HttpServlet {
                                 request.setAttribute("Message", "Registration failed, please try again!");
                             }
                         } else {
+                                request.setAttribute("txtUserName", username);
+                                request.setAttribute("txtFullName", fullName);
+                                request.setAttribute("txtPhoneNumber", phoneNumber);
+                                request.setAttribute("txtEmail", email);
+                                url = "register.jsp";
+                            }
                             url = "register.jsp";
                         }
-                    }
 //                    }else if()
 
                 }
@@ -194,9 +199,9 @@ public class MainController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //Tạo 1 cái tài khoản để demo ko đăng nhập:
-        UserDTO user1 = new UserDTO(1, "admin", "admin123", "Administrator", 
+        UserDTO user1 = new UserDTO(1, "admin", "admin123", "Administrator",
                 "1122334455", "example@gmail.com", "Staff");
-        UserDTO user2 = new UserDTO(2, "john_doe", "password123", "John Doe", 
+        UserDTO user2 = new UserDTO(2, "john_doe", "password123", "John Doe",
                 "0987654321", "example@gmail.com", "User");
         HttpSession se = request.getSession();
         se.setAttribute("account", user1);

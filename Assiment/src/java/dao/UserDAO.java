@@ -28,9 +28,9 @@ public class UserDAO implements IDAO<UserDTO, String> {
                 + "           ([UserName]\n"
                 + "           ,[Password]\n"
                 + "           ,[FullName]\n"
-                + "           ,[Phone]\n"
+                + "           ,[PhoneNumber]\n"
                 + "           ,[Email]\n"
-                + "           ,[Type])"
+                + "           ,[Role])"
                 + "VALUES (? , ? , ? , ? , ?, ? )";
         try {
             Connection conn = DBUtils.getConnection();
@@ -40,8 +40,7 @@ public class UserDAO implements IDAO<UserDTO, String> {
             ps.setString(3, entity.getFullName());
             ps.setString(4, entity.getPhoneNumber());
             ps.setString(5, entity.getEmail());
-            int type = (entity.getRole().equals("User") ? 2 : 1);
-            ps.setObject(6, type);
+            ps.setString(6, entity.getRole());
             int n = ps.executeUpdate();
             return n > 0;
         } catch (ClassNotFoundException | SQLException ex) {
@@ -124,7 +123,7 @@ public class UserDAO implements IDAO<UserDTO, String> {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 UserDTO user = new UserDTO(
-                        rs.getInt("CartID"),
+                        rs.getInt("AccountID"),
                         rs.getString("UserName"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
