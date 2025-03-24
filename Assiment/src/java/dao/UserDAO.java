@@ -24,8 +24,14 @@ public class UserDAO implements IDAO<UserDTO, String> {
 
     @Override
     public boolean create(UserDTO entity) {
-        String sql = "INSERT INTO [dbo].[Account] ([UserName],[Password],[FullName],[PhoneNumber],[Email],[Role])"
-                + "VALUES (? , ? , ? , ? , ? , ?)";
+        String sql = "INSERT INTO [dbo].[Account]\n"
+                + "           ([UserName]\n"
+                + "           ,[Password]\n"
+                + "           ,[FullName]\n"
+                + "           ,[Phone]\n"
+                + "           ,[Email]\n"
+                + "           ,[Type])"
+                + "VALUES (? , ? , ? , ? , ?, ? )";
         try {
             Connection conn = DBUtils.getConnection();
             PreparedStatement ps = conn.prepareStatement(sql);
@@ -34,12 +40,11 @@ public class UserDAO implements IDAO<UserDTO, String> {
             ps.setString(3, entity.getFullName());
             ps.setString(4, entity.getPhoneNumber());
             ps.setString(5, entity.getEmail());
-            ps.setString(6, entity.getRole());
+            int type = (entity.getRole().equals("User") ? 2 : 1);
+            ps.setObject(6, type);
             int n = ps.executeUpdate();
             return n > 0;
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(UserDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
@@ -84,16 +89,18 @@ public class UserDAO implements IDAO<UserDTO, String> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 UserDTO user = new UserDTO(
+                        rs.getInt("CartID"),
                         rs.getString("UserName"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
-                        rs.getString("PhoneNumber"),
+                        rs.getString("Phone"),
                         rs.getString("Email"),
-                        rs.getString("Role")
+                        (rs.getInt("Role") == 1 ? "Staff" : "User")
                 );
                 list.add(user);
             }
-        } catch (Exception e) {
+        } catch (ClassNotFoundException | SQLException e) {
+            System.out.println(e);
         }
         return list;
     }
@@ -117,6 +124,7 @@ public class UserDAO implements IDAO<UserDTO, String> {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 UserDTO user = new UserDTO(
+                        rs.getInt("CartID"),
                         rs.getString("UserName"),
                         rs.getString("Password"),
                         rs.getString("FullName"),

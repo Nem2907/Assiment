@@ -5,7 +5,11 @@
  */
 package controller;
 
+import dao.CategoryDAO;
+import dao.ProductDAO;
 import dao.UserDAO;
+import dto.CategoryDTO;
+import dto.ProductDTO;
 import dto.UserDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -148,7 +152,7 @@ public class MainController extends HttpServlet {
                             isCheckError = true;
                             request.setAttribute("Email_ExisterrorMessage", "This Email is used !");
                         }
-                            System.out.println(isCheckError);
+                        System.out.println(isCheckError);
                         // Nếu có lỗi, quay lại trang đăng ký
                         if (!isCheckError) {
                             // Nếu hợp lệ, tiếp tục xử lý đăng ký (thêm vào database)
@@ -189,7 +193,24 @@ public class MainController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        //Tạo 1 cái tài khoản để demo ko đăng nhập:
+        UserDTO user1 = new UserDTO(1, "admin", "admin123", "Administrator", 
+                "1122334455", "example@gmail.com", "Staff");
+        UserDTO user2 = new UserDTO(2, "john_doe", "password123", "John Doe", 
+                "0987654321", "example@gmail.com", "User");
+        HttpSession se = request.getSession();
+        se.setAttribute("account", user1);
+        //
+        response.setContentType("text/html;charset=UTF-8");
+        ProductDAO pdao = new ProductDAO();
+        CategoryDAO cdao = new CategoryDAO();
+        List<ProductDTO> listP = pdao.readAll();
+        List<CategoryDTO> listCate = cdao.readAll();
+        ProductDTO newPro = pdao.getNewProduct();
+        request.setAttribute("newPro", newPro);
+        request.setAttribute("listProduct", listP);
+        request.setAttribute("listCategory", listCate);
+        request.getRequestDispatcher("views/home.jsp").forward(request, response);
     }
 
     /**

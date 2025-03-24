@@ -10,29 +10,48 @@ package dto;
  * @author hoang
  */
 public class UserDTO {
-     private String UserName ;
-     private String Password ;
-     private String FullName ;
-     private String PhoneNumber ;
-     private String Email ;
-     private String Role;
+
+    private int userID;
+    private String UserName;
+    private String Password;
+    private String FullName;
+    private String PhoneNumber;
+    private String Email;
+    private String Role;
 
     public UserDTO() {
-       this.UserName = "";
-       this.Password = "";
-       this.FullName = "";
-       this.PhoneNumber = "";
-       this.Email = "";
-       this.Role = "User";
+        this.userID = 0;
+        this.UserName = "";
+        this.Password = "";
+        this.FullName = "";
+        this.PhoneNumber = "";
+        this.Email = "";
+        this.Role = "User";
     }
 
+    
     public UserDTO(String UserName, String Password, String FullName, String PhoneNumber, String Email, String Role) {
+        this.userID = 0;
         this.UserName = UserName;
         this.Password = Password;
         this.FullName = FullName;
         this.PhoneNumber = PhoneNumber;
         this.Email = Email;
         this.Role = Role;
+    }
+
+    public UserDTO(int userID, String UserName, String Password, String FullName, String PhoneNumber, String Email, String Role) {
+        this.userID = userID;
+        this.UserName = UserName;
+        this.Password = Password;
+        this.FullName = FullName;
+        this.PhoneNumber = PhoneNumber;
+        this.Email = Email;
+        this.Role = Role;
+    }
+
+    public int getUserID() {
+        return userID;
     }
 
     public String getUserName() {
@@ -53,6 +72,10 @@ public class UserDTO {
 
     public String getFullName() {
         return FullName;
+    }
+
+    public void setUserID(int userID) {
+        this.userID = userID;
     }
 
     public void setFullName(String FullName) {
@@ -87,7 +110,5 @@ public class UserDTO {
     public String toString() {
         return "UserDTO{" + "UserName=" + UserName + ", Password=" + Password + ", FullName=" + FullName + ", PhoneNumber=" + PhoneNumber + ", Email=" + Email + ", Role=" + Role + '}';
     }
-     
+
 }
-
-
