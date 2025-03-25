@@ -62,7 +62,7 @@
                 <div class="col-md-6" style="background: whitesmoke">
                     <h3>Please log in here.</h3>
                     <p>Enter your details below</p>
-                    <form action="MainController" method="post">                         
+                    <form action="MainController" method="POST">                         
 
                         <input type="hidden" name="action" value="login">
 
@@ -91,13 +91,12 @@
                     <%
                         }
                     %>
-                    
+
                     <%
                         String Message = (String) request.getAttribute("Message") + "";
-                        
+
                     %>
-                                        <%
-                        if (Message != null && !Message.equals("null") && !Message.isEmpty()) {
+                    <%                                            if (Message != null && !Message.equals("null") && !Message.isEmpty()) {
                     %>
                     <div class="message">
                         <div class="p-3 mb-2 bg-success text-white"><%= Message%></div>

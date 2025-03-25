@@ -72,11 +72,10 @@ public class ManagerController extends HttpServlet {
         CategoryDAO cadao = new CategoryDAO();
         SupplierDAO sudao = new SupplierDAO();
         HttpSession se = request.getSession();
-        //
         //ktr user
         UserDTO ac = (UserDTO) se.getAttribute("account");
         if (ac == null) {
-            response.sendRedirect("login");
+            response.sendRedirect("login.jsp");
             return;
         }
         //
@@ -99,7 +98,7 @@ public class ManagerController extends HttpServlet {
             //check lại cái account cho chắc:
             HttpSession sess = request.getSession();
             UserDTO acc = (UserDTO) sess.getAttribute("account");
-            if (acc.getRole().equals("Staff")) {
+            if (acc.getRole().equals("admin")) {
                 //load sản phẩm lên cho trang quản lý:
                 List<ProductDTO> listProduct = pdao.readAll();
                 request.setAttribute("listP", listProduct);
@@ -131,7 +130,6 @@ public class ManagerController extends HttpServlet {
                 response.sendRedirect("manager");
                 return;
             }
-            action = action.trim();
             ProductDAO pdao = new ProductDAO();
             //
             String productId = request.getParameter("productId");
@@ -158,25 +156,19 @@ public class ManagerController extends HttpServlet {
             //
             String imageLink = request.getParameter("image");
             String description = request.getParameter("description");
-            switch (action) {
-                case "edit":
-                    ProductDTO pEdit = new ProductDTO(id, productName, supplierId, categoryId,
-                            quantity, price, description, null, imageLink);
-                    pdao.update(pEdit);
-                    break;
-                case "delete":
-                    pdao.delete(id);
-                    break;
-                case "add":
-                    ProductDTO pCreate = new ProductDTO(0, productName, supplierId, categoryId,
-                            quantity, price, description, null, imageLink);
-                    pdao.create(pCreate);
-                    break;
-                default:
-                    throw new Exception();
+            if (action.trim().equalsIgnoreCase("edit")) {
+                ProductDTO pEdit = new ProductDTO(id, productName, supplierId, categoryId,
+                        quantity, price, description, null, imageLink);
+                pdao.update(pEdit);
+            } else if (action.trim().equalsIgnoreCase("delete")) {
+                pdao.delete(id);
+            } else if (action.trim().equalsIgnoreCase("add")) {
+                ProductDTO pCreate = new ProductDTO(0, productName, supplierId, categoryId,
+                        quantity, price, description, null, imageLink);
+                pdao.create(pCreate);
             }
             response.sendRedirect("manager");
-        } catch (Exception e) {
+        } catch (IOException | NumberFormatException e) {
             System.out.println(e);
             response.sendRedirect("manager");
         }

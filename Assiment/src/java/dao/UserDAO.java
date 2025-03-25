@@ -88,13 +88,13 @@ public class UserDAO implements IDAO<UserDTO, String> {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 UserDTO user = new UserDTO(
-                        rs.getInt("CartID"),
+                        rs.getInt("AccountID"),
                         rs.getString("UserName"),
                         rs.getString("Password"),
                         rs.getString("FullName"),
-                        rs.getString("Phone"),
+                        rs.getString("PhoneNumber"),
                         rs.getString("Email"),
-                        (rs.getInt("Role") == 1 ? "Staff" : "User")
+                        rs.getString("Role")
                 );
                 list.add(user);
             }

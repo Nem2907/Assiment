@@ -60,8 +60,8 @@ public class ProductDAO extends DBUtils implements IDAO<ProductDTO, Integer> {
         List<ProductDTO> listFound = new ArrayList<>();
         //chuẩn bị câu lệnh SQL:
         String sql = "  SELECT p.*, c.CategoryName\n"
-                + "  FROM [PizzaStoreDB].[dbo].[Products] p \n"
-                + "		LEFT JOIN [PizzaStoreDB].[dbo].[Categories] c \n"
+                + "  FROM [dbo].[Products] p \n"
+                + "		LEFT JOIN [dbo].[Categories] c \n"
                 + "		ON p.CategoryID = c.CategoryID \n"
                 + "  WHERE p.Sale = 1";
         // Tạo đối tượng PrepareStatement:
@@ -97,8 +97,8 @@ public class ProductDAO extends DBUtils implements IDAO<ProductDTO, Integer> {
         ProductDTO p = null;
         //chuẩn bị câu lệnh SQL:
         String sql = "  SELECT p.*, c.CategoryName\n"
-                + "  FROM [PizzaStoreDB].[dbo].[Products] p \n"
-                + "		LEFT JOIN [PizzaStoreDB].[dbo].[Categories] c \n"
+                + "  FROM [dbo].[Products] p \n"
+                + "		LEFT JOIN [dbo].[Categories] c \n"
                 + "		ON p.CategoryID = c.CategoryID \n"
                 + "  WHERE p.ProductID = ? AND p.Sale = 1";
 
@@ -190,8 +190,8 @@ public class ProductDAO extends DBUtils implements IDAO<ProductDTO, Integer> {
 
         //chuẩn bị câu lệnh SQL:
         String sql = "  SELECT top 1 p.*, c.CategoryName\n"
-                + "  FROM [PizzaStoreDB].[dbo].[Products] p \n"
-                + "		  LEFT JOIN [PizzaStoreDB].[dbo].[Categories] c \n"
+                + "  FROM [dbo].[Products] p \n"
+                + "		  LEFT JOIN [dbo].[Categories] c \n"
                 + "		  on p.CategoryID = c.CategoryID \n"
                 + "  WHERE p.Sale = 1"
                 + "  ORDER BY ProductID desc";
@@ -229,8 +229,8 @@ public class ProductDAO extends DBUtils implements IDAO<ProductDTO, Integer> {
         List<ProductDTO> listFound = new ArrayList<>();
         //chuẩn bị câu lệnh SQL:
         String sql = "  SELECT p.*, c.CategoryName\n"
-                + "  FROM [PizzaStoreDB].[dbo].[Products] p \n"
-                + "		LEFT JOIN [PizzaStoreDB].[dbo].[Categories] c \n"
+                + "  FROM [dbo].[Products] p \n"
+                + "		LEFT JOIN [dbo].[Categories] c \n"
                 + "		ON p.CategoryID = c.CategoryID \n"
                 + "  WHERE p.CategoryID = ?  AND p.Sale = 1";
 
@@ -272,8 +272,8 @@ public class ProductDAO extends DBUtils implements IDAO<ProductDTO, Integer> {
         List<ProductDTO> listFound = new ArrayList<>();
         // Xây dựng SQL động
         String sql = "SELECT p.*, c.CategoryName "
-                + "FROM [PizzaStoreDB].[dbo].[Products] p "
-                + "LEFT JOIN [PizzaStoreDB].[dbo].[Categories] c "
+                + "FROM [dbo].[Products] p "
+                + "LEFT JOIN [dbo].[Categories] c "
                 + "ON p.CategoryID = c.CategoryID "
                 + "WHERE p.ProductName LIKE ?  AND p.Sale = 1";
 
@@ -313,8 +313,8 @@ public class ProductDAO extends DBUtils implements IDAO<ProductDTO, Integer> {
         List<ProductDTO> listFound = new ArrayList<>();
         // Xây dựng SQL động
         String sql = "SELECT p.*, c.CategoryName "
-                + "FROM [PizzaStoreDB].[dbo].[Products] p "
-                + "LEFT JOIN [PizzaStoreDB].[dbo].[Categories] c "
+                + "FROM [dbo].[Products] p "
+                + "LEFT JOIN [dbo].[Categories] c "
                 + "ON p.CategoryID = c.CategoryID "
                 + "WHERE p.UnitPrice = ?  AND p.Sale = 1";
 

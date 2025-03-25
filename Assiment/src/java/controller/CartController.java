@@ -71,9 +71,7 @@ public class CartController extends HttpServlet {
         CartDAO cartDao = new CartDAO();
         List<CartItemDTO> listCart = cartDao.getAllProductInCartByID(ac.getUserID());
         double totalAllProduct = 0;
-        for (CartItemDTO cartItem : listCart) {
-            totalAllProduct += cartItem.getTotal();
-        }
+        totalAllProduct = listCart.stream().map((cartItem) -> cartItem.getTotal()).reduce(totalAllProduct, (accumulator, _item) -> accumulator + _item);
         System.out.println(listCart);
         request.setAttribute("listCart", listCart);
         request.setAttribute("totalAllProduct", totalAllProduct);
@@ -96,7 +94,7 @@ public class CartController extends HttpServlet {
             String action = request.getParameter("action");
             if (action == null) {
                 //return về trang home
-                response.sendRedirect("home");
+                response.sendRedirect("MainController");
                 return;
             }
             HttpSession se = request.getSession();
@@ -106,43 +104,36 @@ public class CartController extends HttpServlet {
                 response.sendRedirect("login.jsp");
                 return;
             }
-            action = action.trim();
             String cartItemId = request.getParameter("cartItemId");
             CartDAO cartDao = new CartDAO();
             int id = 0;
             if (!(cartItemId == null)) {
                 id = Integer.parseInt(cartItemId);
             }
-            switch (action) {
-                case "update":
-                    String quantityUpdate_str = request.getParameter("quantity");
-                    if (quantityUpdate_str == null) {
-                        quantityUpdate_str = "0";
-                    }
-                    int quantityUpdate = Integer.parseInt(quantityUpdate_str.trim());
-                    if (quantityUpdate == 0) {
-                        cartDao.delete(id);
-                    } else {
-                        cartDao.update(id, quantityUpdate);
-                    }
-                    break;
-                case "delete":
+            if (action.trim().equalsIgnoreCase("update")) {
+                String quantityUpdate_str = request.getParameter("quantity");
+                if (quantityUpdate_str == null) {
+                    quantityUpdate_str = "0";
+                }
+                int quantityUpdate = Integer.parseInt(quantityUpdate_str.trim());
+                if (quantityUpdate == 0) {
                     cartDao.delete(id);
-                    break;
-                case "add":
-                    String productIdSTR = request.getParameter("productId");
-                    String quantitySTR = request.getParameter("quantity");
-                    if (quantitySTR == null) {
-                        quantitySTR = "1";
-                    }
-                    if (!(productIdSTR == null)) {
-                        int quantity = Integer.parseInt(quantitySTR.trim());
-                        int productID = Integer.parseInt(productIdSTR.trim());
-                        cartDao.addItemToCart(ac.getUserID(), productID, quantity);
-                    }
-                    break;
-                default:
-                    throw new Exception();
+                } else {
+                    cartDao.update(id, quantityUpdate);
+                }
+            } else if (action.trim().equalsIgnoreCase("delete")) {
+                cartDao.delete(id);
+            } else if (action.trim().equalsIgnoreCase("add")) {
+                String productIdSTR = request.getParameter("productId");
+                String quantitySTR = request.getParameter("quantity");
+                if (quantitySTR == null) {
+                    quantitySTR = "1";
+                }
+                if (!(productIdSTR == null)) {
+                    int quantity = Integer.parseInt(quantitySTR.trim());
+                    int productID = Integer.parseInt(productIdSTR.trim());
+                    cartDao.addItemToCart(ac.getUserID(), productID, quantity);
+                }
             }
             response.sendRedirect("cart");
         } catch (Exception e) {

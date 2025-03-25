@@ -58,6 +58,7 @@ public class MainController extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             String url = LOGIN_PAGE;
@@ -73,10 +74,9 @@ public class MainController extends HttpServlet {
                         System.out.println(userName);
                         System.out.println(passWord);
                         if (AuthUtils.isValidLogin(userName, passWord)) {
-                            HttpSession session = request.getSession();
-                            url = "menu.jsp";
+                            url = "views/home.jsp";
                             UserDTO user = AuthUtils.getUser(userName);
-                            request.getSession().setAttribute("user", user);
+                            request.getSession().setAttribute("account", user);
                             request.getSession().setAttribute("role", user.getRole());
                         } else {
                             request.setAttribute("errorMessage", "Invalid UserName or Password !");
@@ -156,7 +156,7 @@ public class MainController extends HttpServlet {
                         // Nếu có lỗi, quay lại trang đăng ký
                         if (!isCheckError) {
                             // Nếu hợp lệ, tiếp tục xử lý đăng ký (thêm vào database)
-                            UserDTO user = new UserDTO(username, PasswordUtils.hashPassword(password), fullName, phoneNumber, email, "User");
+                            UserDTO user = new UserDTO(username, PasswordUtils.hashPassword(password), fullName, phoneNumber, email, "user");
                             boolean isCreated = userDAO.create(user);
                             System.out.println(isCreated);
                             if (isCreated) {
@@ -165,14 +165,14 @@ public class MainController extends HttpServlet {
                                 request.setAttribute("Message", "Registration failed, please try again!");
                             }
                         } else {
-                                request.setAttribute("txtUserName", username);
-                                request.setAttribute("txtFullName", fullName);
-                                request.setAttribute("txtPhoneNumber", phoneNumber);
-                                request.setAttribute("txtEmail", email);
-                                url = "register.jsp";
-                            }
+                            request.setAttribute("txtUserName", username);
+                            request.setAttribute("txtFullName", fullName);
+                            request.setAttribute("txtPhoneNumber", phoneNumber);
+                            request.setAttribute("txtEmail", email);
                             url = "register.jsp";
                         }
+                        url = "register.jsp";
+                    }
 //                    }else if()
 
                 }
@@ -180,8 +180,12 @@ public class MainController extends HttpServlet {
                 log("Error in MainController: " + e.toString());
             } finally {
                 System.out.println("Redirecting to: " + url); // Kiểm tra URL trước khi forward
-                RequestDispatcher rd = request.getRequestDispatcher(url);
-                rd.forward(request, response);
+                if (url.equalsIgnoreCase("views/home.jsp")) {
+                    response.sendRedirect("MainController");
+                } else {
+                    RequestDispatcher rd = request.getRequestDispatcher(url);
+                    rd.forward(request, response);
+                }
             }
         }
     }
@@ -198,20 +202,14 @@ public class MainController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        //Tạo 1 cái tài khoản để demo ko đăng nhập:
-        UserDTO user1 = new UserDTO(1, "admin", "admin123", "Administrator",
-                "1122334455", "example@gmail.com", "Staff");
-        UserDTO user2 = new UserDTO(2, "john_doe", "password123", "John Doe",
-                "0987654321", "example@gmail.com", "User");
-        HttpSession se = request.getSession();
-        se.setAttribute("account", user1);
-        //
         response.setContentType("text/html;charset=UTF-8");
         ProductDAO pdao = new ProductDAO();
         CategoryDAO cdao = new CategoryDAO();
+        //
         List<ProductDTO> listP = pdao.readAll();
         List<CategoryDTO> listCate = cdao.readAll();
         ProductDTO newPro = pdao.getNewProduct();
+        //
         request.setAttribute("newPro", newPro);
         request.setAttribute("listProduct", listP);
         request.setAttribute("listCategory", listCate);

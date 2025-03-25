@@ -1,6 +1,6 @@
-﻿CREATE DATABASE PizzaStoreDB
-USE PizzaStoreDB
-DROP DATABASE PizzaStoreDB
+﻿CREATE DATABASE Assigment
+USE Assigment
+DROP DATABASE Assigment
 -- Customers Table
 
 -- Categories Table
@@ -97,15 +97,6 @@ INSERT INTO Cart (AccountID, ProductID, Quantity) VALUES
 (4, 3, 1);
 
 
-
--- Insert into Customers
-INSERT INTO Customers (CustomerID, AccountID, Password, ContactName, Address, Phone) VALUES
-('C001', 2, 'password123', 'John Doe', '123 Main St, New York', '1234567890'),
-('C002', 3, 'jane456', 'Jane Smith', '456 Maple Ave, LA', '0987654321'),
-('C003', 4, 'spiderman', 'Peter Parker', 'Queens, New York', '1122334455');
-
-
-
 -- Insert into Categories
 INSERT INTO Categories (CategoryID, CategoryName, Description) VALUES
 ('CAT01', 'Cheese Pizza', 'Classic cheese pizza with mozzarella and tomato sauce'),
@@ -197,14 +188,16 @@ INSERT INTO [dbo].[Account]
            ,<Type, int,>)
 GO
 
+
+
  SELECT p.*, c.CategoryName
                FROM [PizzaStoreDB].[dbo].[Products] p 
                	LEFT JOIN [PizzaStoreDB].[dbo].[Categories] c 
               	ON p.CategoryID = c.CategoryID 
                 WHERE p.Sale = 1
-UPDATE [dbo].[Products]
-                 SET [Sale] = 0
-            WHERE ProductID = 6
-
+UPDATE [dbo].[Account]
+                 SET Role = 'admin'
+            WHERE AccountID = 8
+DELETE FROM Account WHERE AccountID = 7
 
 

@@ -21,24 +21,26 @@ public class AuthUtils {
     public static UserDTO getUser(String strUserID) {
         UserDAO udao = new UserDAO();
         UserDTO user = udao.readByName(strUserID);
+        System.out.println(user);
         return user;
     }
 
     public static boolean isValidLogin(String strUserID, String strPassword) {
         UserDTO user = getUser(strUserID);
         System.out.println(user);
+        
         return user != null && utils.PasswordUtils.checkPassword(strPassword, user.getPassword());
     }
 
     public static boolean isLoggedIn(HttpSession session) {
-        return session.getAttribute("user") != null;
+        return session.getAttribute("account") != null;
     }
 
     public static UserDTO getUser(HttpSession session) {
         if (!isLoggedIn(session)) {
             return null;
         }
-        return (UserDTO) session.getAttribute("user");
+        return (UserDTO) session.getAttribute("account");
     }
 
     public static boolean isAdmin(HttpSession session) {

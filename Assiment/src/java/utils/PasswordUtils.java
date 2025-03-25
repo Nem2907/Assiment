@@ -35,6 +35,7 @@ public class PasswordUtils {
 
     public static boolean checkPassword(String plainPassword, String hashedPassword) {
         String newHashedPassword = hashPassword(plainPassword);
+        System.out.println(newHashedPassword);
         return newHashedPassword != null && newHashedPassword.equals(hashedPassword);
     }
 

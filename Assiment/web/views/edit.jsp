@@ -50,11 +50,11 @@
                 </div>
                 <div class="form-group">
                     <label>Quantity</label>
-                    <input  name="quantity" type="number" value="${pDetail.getQuantityPerUnit()}">
+                    <input  name="quantity" type="text" value="${pDetail.getQuantityPerUnit()}">
                 </div>
                 <div class="form-group">
                     <label>Price</label>
-                    <input name="price" type="number" value="${pDetail.getUnitPrice()}">
+                    <input name="price" type="text" value="${pDetail.getUnitPrice()}">
                 </div>
                 <div class="form-group">
                     <label>Image URL</label>

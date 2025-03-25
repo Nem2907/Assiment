@@ -10,7 +10,7 @@
     <div class="logo"><a href="MainController" style="color: white; text-decoration: none">Pizza</a></div>
     <div class="menu" >
         <ul class="navbar-nav d-flex flex-row align-items-center gap-3">
-            <c:if test="${sessionScope.account.getRole() eq 'Staff'}">
+            <c:if test="${sessionScope.account.getRole() eq 'admin'}">
                 <li class="nav-item">
                     <a class="nav-link" href="manager">Manager Product</a>
                 </li>
@@ -18,7 +18,7 @@
                     <a class="nav-link" href="logout">Logout</a>
                 </li>
             </c:if>   
-            <c:if test="${sessionScope.account.getRole() eq 'User'}">
+            <c:if test="${sessionScope.account.getRole() eq 'user'}">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Hello ${sessionScope.account.getFullName()}</a>
                 </li>
