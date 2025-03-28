@@ -5,9 +5,13 @@
  */
 package controller;
 
+import dao.CartDAO;
 import dao.CategoryDAO;
+import dao.OrderDAO;
+import dao.OrderDetailsDAO;
 import dao.ProductDAO;
 import dao.UserDAO;
+import dto.CartItemDTO;
 import dto.CategoryDTO;
 import dto.ProductDTO;
 import dto.UserDTO;
@@ -31,8 +35,7 @@ import utils.PasswordUtils;
 @WebServlet(name = "MainController", urlPatterns = {"/MainController"})
 public class MainController extends HttpServlet {
 
-    public static final String LOGIN_PAGE = "login.jsp";
-    public static final String SEARCH_PAGE = "search.jsp";
+    public static final String LOGIN_PAGE = "views/login.jsp";
 
     public UserDTO getUser(String strUserName) {
         UserDAO udao = new UserDAO();
@@ -56,6 +59,98 @@ public class MainController extends HttpServlet {
         return true;
     }
 
+    protected void processRegister(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String url = LOGIN_PAGE;
+        UserDAO userDAO = new UserDAO();
+        String username = request.getParameter("txtUserName");
+        String password = request.getParameter("txtPassword");
+        String fullName = request.getParameter("txtFullName");
+        String phoneNumber = request.getParameter("txtPhoneNumber");
+        String email = request.getParameter("txtEmail");
+        String confirmPassword = request.getParameter("txtConfirmPassword");
+
+        System.out.println(username);
+        System.out.println(password);
+        System.out.println(fullName);
+        System.out.println(phoneNumber);
+        System.out.println(email);
+        System.out.println(confirmPassword);
+        boolean isCheckError = false;
+
+        //kiểm tra confirm Password có giống password cũ ko?
+        if (!password.equals(confirmPassword)) {
+            isCheckError = true;
+            request.setAttribute("confirm_ErrorMessage", "Confirm Password must be equal to Password !");
+        }
+        //kiểm tra password
+        if (confirmPassword == null || confirmPassword.trim().isEmpty()) {
+            isCheckError = true;
+            request.setAttribute("confirmPassword_ErrorMessage", "ConfirmPassword can't be null !");
+        }
+        //kiểm tra xem userName có bị trùng không ?
+        if (userDAO.isUserExists(username)) {
+            isCheckError = true;
+            request.setAttribute("userName_ExisterrorMessage", "This username is used !");
+        }
+        // Kiểm tra username có bị null ko
+        if (username == null || username.trim().isEmpty()) {
+            isCheckError = true;
+            request.setAttribute("userName_ErrorMessage", "Username can't be Empty !");
+        }
+
+        // Kiểm tra mật khẩu (độ dài tối thiểu 6 ký tự)
+        if (password == null || password.length() < 6) {
+            isCheckError = true;
+            request.setAttribute("password_errorMessage", "Password can't be Empty!");
+        }
+
+        // Kiểm tra fullname
+        if (fullName == null || fullName.trim().isEmpty()) {
+            isCheckError = true;
+            request.setAttribute("fullname_errorMessage", "FullName can't be Empty ");
+        }
+
+        // Kiểm tra số điện thoại (chỉ chứa số, độ dài hợp lệ)
+        if (phoneNumber == null || !phoneNumber.matches("\\d{10,11}")) {
+            isCheckError = true;
+            request.setAttribute("phoneNumber_errorMessage", "PhoneNumber is Invalid");
+        }
+
+        // Kiểm tra email đúng định dạng
+        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            isCheckError = true;
+            request.setAttribute("email_errorMessage", "Email is Invalid !");
+        }
+        //kiểm tra email có bị trùng hay không ?
+        if (userDAO.isEmailExists(email)) {
+            isCheckError = true;
+            request.setAttribute("Email_ExisterrorMessage", "This Email is used !");
+        }
+        System.out.println(isCheckError);
+        // Nếu có lỗi, quay lại trang đăng ký
+        if (!isCheckError) {
+            // Nếu hợp lệ, tiếp tục xử lý đăng ký (thêm vào database)
+            UserDTO user = new UserDTO(username, PasswordUtils.hashPassword(password), fullName, phoneNumber, email, "user");
+            boolean isCreated = userDAO.create(user);
+            System.out.println(isCreated);
+            if (isCreated) {
+                request.setAttribute("Message", "Register Successfully!");
+                request.getRequestDispatcher("login.jsp").forward(request, response);
+            } else {
+                request.setAttribute("Message", "Registration failed, please try again!");
+            }
+        } else {
+            request.setAttribute("txtUserName", username);
+            request.setAttribute("txtFullName", fullName);
+            request.setAttribute("txtPhoneNumber", phoneNumber);
+            request.setAttribute("txtEmail", email);
+            url = "register.jsp";
+        }
+        url = "register.jsp";
+
+    }
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -65,6 +160,7 @@ public class MainController extends HttpServlet {
             UserDAO userDAO = new UserDAO();
             try {
                 String action = request.getParameter("action");
+                System.out.println(action);
                 if (action == null) {
                     url = LOGIN_PAGE;
                 } else {
@@ -85,96 +181,12 @@ public class MainController extends HttpServlet {
                     } else if (action.equals("Register")) {
                         url = "register.jsp";
                     } else if (action.equals("logout")) {
-                        request.getSession().invalidate();
-                        url = "login.jsp";
+                        request.removeAttribute("user");
+                        response.sendRedirect("views/home.jsp");
                     } else if (action.equals("register-account")) {
-                        String username = request.getParameter("txtUserName");
-                        String password = request.getParameter("txtPassword");
-                        String fullName = request.getParameter("txtFullName");
-                        String phoneNumber = request.getParameter("txtPhoneNumber");
-                        String email = request.getParameter("txtEmail");
-                        String confirmPassword = request.getParameter("txtConfirmPassword");
-
-                        System.out.println(username);
-                        System.out.println(password);
-                        System.out.println(fullName);
-                        System.out.println(phoneNumber);
-                        System.out.println(email);
-                        System.out.println(confirmPassword);
-                        boolean isCheckError = false;
-
-                        //kiểm tra confirm Password có giống password cũ ko?
-                        if (!password.equals(confirmPassword)) {
-                            isCheckError = true;
-                            request.setAttribute("confirm_ErrorMessage", "Confirm Password must be equal to Password !");
-                        }
-                        //kiểm tra password
-                        if (confirmPassword == null || confirmPassword.trim().isEmpty()) {
-                            isCheckError = true;
-                            request.setAttribute("confirmPassword_ErrorMessage", "ConfirmPassword can't be null !");
-                        }
-                        //kiểm tra xem userName có bị trùng không ?
-                        if (userDAO.isUserExists(username)) {
-                            isCheckError = true;
-                            request.setAttribute("userName_ExisterrorMessage", "This username is used !");
-                        }
-                        // Kiểm tra username có bị null ko
-                        if (username == null || username.trim().isEmpty()) {
-                            isCheckError = true;
-                            request.setAttribute("userName_ErrorMessage", "Username can't be Empty !");
-                        }
-
-                        // Kiểm tra mật khẩu (độ dài tối thiểu 6 ký tự)
-                        if (password == null || password.length() < 6) {
-                            isCheckError = true;
-                            request.setAttribute("password_errorMessage", "Password can't be Empty!");
-                        }
-
-                        // Kiểm tra fullname
-                        if (fullName == null || fullName.trim().isEmpty()) {
-                            isCheckError = true;
-                            request.setAttribute("fullname_errorMessage", "FullName can't be Empty ");
-                        }
-
-                        // Kiểm tra số điện thoại (chỉ chứa số, độ dài hợp lệ)
-                        if (phoneNumber == null || !phoneNumber.matches("\\d{10,11}")) {
-                            isCheckError = true;
-                            request.setAttribute("phoneNumber_errorMessage", "PhoneNumber is Invalid");
-                        }
-
-                        // Kiểm tra email đúng định dạng
-                        if (email == null || !email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-                            isCheckError = true;
-                            request.setAttribute("email_errorMessage", "Email is Invalid !");
-                        }
-                        //kiểm tra email có bị trùng hay không ?
-                        if (userDAO.isEmailExists(email)) {
-                            isCheckError = true;
-                            request.setAttribute("Email_ExisterrorMessage", "This Email is used !");
-                        }
-                        System.out.println(isCheckError);
-                        // Nếu có lỗi, quay lại trang đăng ký
-                        if (!isCheckError) {
-                            // Nếu hợp lệ, tiếp tục xử lý đăng ký (thêm vào database)
-                            UserDTO user = new UserDTO(username, PasswordUtils.hashPassword(password), fullName, phoneNumber, email, "user");
-                            boolean isCreated = userDAO.create(user);
-                            System.out.println(isCreated);
-                            if (isCreated) {
-                                request.setAttribute("Message", "Register Successfully!");
-                            } else {
-                                request.setAttribute("Message", "Registration failed, please try again!");
-                            }
-                        } else {
-                            request.setAttribute("txtUserName", username);
-                            request.setAttribute("txtFullName", fullName);
-                            request.setAttribute("txtPhoneNumber", phoneNumber);
-                            request.setAttribute("txtEmail", email);
-                            url = "register.jsp";
-                        }
-                        url = "register.jsp";
+                        processRegister(request, response);
                     }
-//                    }else if()
-
+                    
                 }
             } catch (Exception e) {
                 log("Error in MainController: " + e.toString());

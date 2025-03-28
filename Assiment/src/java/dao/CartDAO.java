@@ -121,9 +121,9 @@ public class CartDAO implements IDAO<CartItemDTO, Integer> {
         }
         return false;
     }
-    
+
     //update Product in cart:
-    public boolean update(int id, int quantity){
+    public boolean update(int id, int quantity) {
         // Xây dựng SQL
         String sql = "UPDATE [dbo].[Cart]\n"
                 + "   SET [Quantity] = ?\n"
@@ -138,6 +138,19 @@ public class CartDAO implements IDAO<CartItemDTO, Integer> {
             return ps.executeUpdate() > 0;
         } catch (SQLException | ClassNotFoundException e) {
             System.out.println(e);
+        }
+        return false;
+    }
+    // Xóa toàn bộ sản phẩm trong giỏ hàng của một Account
+
+    public boolean clearCart(int accountId) {
+        String sql = "DELETE FROM Cart WHERE AccountID = ?";
+        try (Connection conn = DBUtils.getConnection();
+                PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, accountId);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException | ClassNotFoundException e) {
+            e.printStackTrace();
         }
         return false;
     }

@@ -3,14 +3,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/fileCode/Workspace/Ass/Assiment/Assiment/web/views/detail.jsp</file>
-            <file>file:/E:/fileCode/Workspace/Ass/Assiment/Assiment/src/java/dao/ProductDAO.java</file>
-            <file>file:/E:/fileCode/Workspace/Ass/Assiment/Assiment/src/java/utils/DBUtils.java</file>
-            <file>file:/E:/fileCode/Workspace/Ass/Assiment/Assiment/src/java/dao/CartDAO.java</file>
-            <file>file:/E:/fileCode/Workspace/Ass/Assiment/Assiment/web/views/manager.jsp</file>
-            <file>file:/E:/fileCode/Workspace/Ass/Assiment/Assiment/src/java/dao/CategoryDAO.java</file>
-            <file>file:/E:/fileCode/Workspace/Ass/Assiment/Assiment/src/java/dao/IDAO.java</file>
-            <file>file:/E:/fileCode/Workspace/Ass/Assiment/Assiment/web/login.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/dao/ProductDAO.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/left.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/cart.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/controller/CartController.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/footer.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/menu.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/login.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/detail.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/register.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/test/userTesst.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/dto/OrderDTO.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/home.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/edit.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/dao/OrderDetailsDAO.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/controller/MainController.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/controller/ManagerController.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/assets/js/util.js</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/dao/CartDAO.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/controller/LogOutController.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/orderConfirmation.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/dto/CartItemDTO.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/src/java/dao/OrderDAO.java</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/add.jsp</file>
+            <file>file:/D:/FPT/Prj/New%20Assiment/Assiment/Assiment/web/views/manager.jsp</file>
         </group>
     </open-files>
 </project-private>

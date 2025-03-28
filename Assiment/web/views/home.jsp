@@ -4,10 +4,22 @@
     Author     : PhamBaoPhi
 --%>
 
+<%@page import="dao.ProductDAO"%>
+<%@page import="dto.ProductDTO"%>
+<%@page import="java.util.List"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html" pageEncoding="UTF-8" %>
 
+<%
+    ProductDAO pdao = new ProductDAO();
+    if (request.getAttribute("listProduct") == null) {
+        List<ProductDTO> products = pdao.readAll();
+        request.setAttribute("listProduct", products);
+    }
+%>
+
 <!DOCTYPE html>
+
 <html lang="en">
     <head>
         <meta charset="UTF-8">
@@ -20,11 +32,27 @@
         <link href="${pageContext.request.contextPath}/assets/css/style-home.css?v=125" rel="stylesheet" type="text/css"/>
     </head>
     <body>
+        
         <!-- Include menu -->
         <jsp:include page="menu.jsp"></jsp:include>
-            <main class="d-flex">
-                <!-- Sidebar -->
-                <div>
+        <%-- Kiểm tra xem có thông báo trong session không --%>
+        <c:if test="${not empty sessionScope.message}">
+            <div class="alert alert-success text-center" id="alertMessage">
+                ${sessionScope.message}
+            </div>
+            <%-- Xóa thông báo sau khi hiển thị --%>
+            <c:remove var="message" scope="session"/>
+            <script>
+                // Ẩn thông báo sau 3 giây
+                setTimeout(() => {
+                    document.getElementById("alertMessage").style.display = "none";
+                }, 3000);
+            </script>
+        </c:if>
+
+        <main class="d-flex">
+            <!-- Sidebar -->
+            <div>
                 <jsp:include page="left.jsp"></jsp:include>
                 </div>
 
@@ -42,7 +70,7 @@
                             <p><strong>Category:</strong> ${p.getCategoryName()}</p>
                             <form action="cart" method="POST">
                                 <input type="hidden" name="action" value="add">
-                                <input type="hidden" name="productId" value="${newPro.getProductID()}">
+                                <input type="hidden" name="productId" value="${p.getProductID()}">
                                 <button class="btn btn-primary w-100">Add Pizza</button>
                             </form>
                         </div>
@@ -57,6 +85,5 @@
 
         <!-- Include Footer -->
         <jsp:include page="footer.jsp"></jsp:include>
-
     </body>
 </html>

@@ -276,3 +276,38 @@ footer ul {
 footer ul li {
     padding: 5px 0;
 }
+/* Định dạng input field */
+.input-field {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+/* Hiệu ứng khi focus vào input */
+.input-field:focus {
+    border-color: #45a049;
+    outline: none;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+/* Nút submit đẹp hơn */
+.btn-submit {
+    background-color: #4CAF50;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    transition: 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #45a049;
+}
+

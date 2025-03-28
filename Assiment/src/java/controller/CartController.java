@@ -6,6 +6,8 @@
 package controller;
 
 import dao.CartDAO;
+import dao.OrderDAO;
+import dao.OrderDetailsDAO;
 import dto.CartItemDTO;
 import dto.UserDTO;
 import java.io.IOException;
@@ -32,23 +34,7 @@ public class CartController extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CartController</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CartController at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
@@ -90,8 +76,11 @@ public class CartController extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("UTF-8");
+
         try {
             String action = request.getParameter("action");
+            System.out.println(action);
             if (action == null) {
                 //return về trang home
                 response.sendRedirect("MainController");
@@ -121,8 +110,25 @@ public class CartController extends HttpServlet {
                 } else {
                     cartDao.update(id, quantityUpdate);
                 }
+                response.sendRedirect("cart");
+                return;
             } else if (action.trim().equalsIgnoreCase("delete")) {
+//                cartDao.delete(id);
+//                return;
                 cartDao.delete(id);
+
+                // Lấy lại danh sách giỏ hàng sau khi xóa
+                List<CartItemDTO> listCart = cartDao.getAllProductInCartByID(ac.getUserID());
+                double totalAllProduct = listCart.stream().mapToDouble(CartItemDTO::getTotal).sum();
+                String formattedTotal = String.format("%.2f", totalAllProduct);
+                request.setAttribute("totalAllProduct", formattedTotal);
+                // Cập nhật lại dữ liệu trong request
+                request.setAttribute("listCart", listCart);
+                request.setAttribute("totalAllProduct", totalAllProduct);
+
+                // Forward về cart.jsp để cập nhật UI ngay lập tức
+                request.getRequestDispatcher("views/cart.jsp").forward(request, response);
+                return;
             } else if (action.trim().equalsIgnoreCase("add")) {
                 String productIdSTR = request.getParameter("productId");
                 String quantitySTR = request.getParameter("quantity");
@@ -133,9 +139,55 @@ public class CartController extends HttpServlet {
                     int quantity = Integer.parseInt(quantitySTR.trim());
                     int productID = Integer.parseInt(productIdSTR.trim());
                     cartDao.addItemToCart(ac.getUserID(), productID, quantity);
+
+                    // Thêm thông báo vào session
+                    se.setAttribute("message", "Pizza đã được thêm vào giỏ hàng!");
                 }
-            }
-            response.sendRedirect("cart");
+                response.sendRedirect("MainController");
+                return;
+            }else if (action.equals("buy")) {
+                Integer accountIdObj = ac.getUserID(); // Nếu ac không null
+                if (accountIdObj == null) {
+                    request.setAttribute("message", "You need to log in before purchasing!");
+                    request.getRequestDispatcher("/login.jsp");
+                    return;
+                }
+                int accountId = accountIdObj; // Ép kiểu an toàn
+                System.out.println(accountId);
+                String shipAddress = request.getParameter("shipAddress");
+                CartDAO cartDAO = new CartDAO();
+                OrderDAO orderDAO = new OrderDAO();
+                OrderDetailsDAO orderDetailsDAO = new OrderDetailsDAO();
+                List<CartItemDTO> cartItems = cartDAO.getAllProductInCartByID(accountId);
+                if (cartItems.isEmpty()) {
+                    request.setAttribute("message", "Your cart is empty!");
+                    request.getRequestDispatcher("/views/cart.jsp").forward(request, response);
+                    return;
+                }
+
+                // Tạo đơn hàng mới
+                double freight = 5.0; // Phí vận chuyển mặc định
+                String orderId = orderDAO.createOrder(accountId, shipAddress, freight);
+
+                if (orderId != null) {
+                    for (CartItemDTO cartItem : cartItems) {
+                        orderDetailsDAO.addOrderDetail(orderId, cartItem.getProductId(), cartItem.getQuantity(), cartItem.getTotal());
+                    }
+                    cartDAO.clearCart(accountId); // Xóa giỏ hàng sau khi mua
+                    request.setAttribute("orderId", orderId);
+                    request.setAttribute("shipAddress", shipAddress);
+                    request.setAttribute("totalAmount", cartItems.stream().mapToDouble(CartItemDTO::getTotal).sum());
+                    request.setAttribute("cartItems", cartItems);
+
+                    request.getRequestDispatcher("views/orderConfirmation.jsp").forward(request, response);
+                    return;
+                } else {
+                    request.setAttribute("message", "Purchase failed!");
+                    request.getRequestDispatcher("cart.jsp").forward(request, response);
+                }
+            } 
+            response.sendRedirect("MainController");
+            return ;
         } catch (Exception e) {
             System.out.println(e);
             response.sendRedirect("cart");

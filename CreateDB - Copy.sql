@@ -1,6 +1,6 @@
-﻿CREATE DATABASE Assigment
-USE Assigment
-DROP DATABASE Assigment
+﻿CREATE DATABASE PizzaStoreDB
+USE PizzaStoreDB
+
 -- Customers Table
 
 -- Categories Table
@@ -46,6 +46,18 @@ CREATE TABLE Orders(
 	ShipAddress VARCHAR(500),
 	FOREIGN KEY (AccountID) REFERENCES Account(AccountID)
 )
+SELECT * FROM Orders WHERE AccountID = '9'
+SELECT * FROM Orders
+ALTER TABLE Orders  
+ALTER COLUMN ShipAddress NVARCHAR(255);
+SELECT ShipAddress FROM Orders WHERE OrderID = 'ORD787827';
+UPDATE Orders 
+SET ShipAddress = N'Quận 7, Thành Phố Hồ Chí Minh' 
+WHERE OrderID = 'ORD787827';
+
+DELETE FROM Orders Where AccountID = '9'
+EXEC sp_help 'Orders';
+
 
 -- Order Details Table
 CREATE TABLE OrderDetails (
@@ -59,9 +71,10 @@ CREATE TABLE OrderDetails (
 );
 
 -- Account Table
+DROP TABle Account
 CREATE TABLE Account (
     AccountID INT PRIMARY key IDENTITY(1,1),
-    UserName VARCHAR(255) NOT NULL UNIQUE,
+    UserName NVARCHAR(255) NOT NULL UNIQUE,
     Password VARCHAR(255) NOT NULL,
 	FullName NVARCHAR(255),
 	PhoneNumber VARCHAR(15),

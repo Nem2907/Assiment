@@ -29,28 +29,17 @@
     <body>
         <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
             <div class="container">
-                <a class="navbar-brand" href="#">Fast Food Online</a>
+                <a class="navbar-brand" href="MainController">Fast Food Online</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav me-auto">
-                        <li class="nav-item"><a class="nav-link" href="MainController">Home</a></li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown">
-                                Categories
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="#">Food</a></li>
-                                <li><a class="dropdown-item" href="#">Drink</a></li>
-                                <li><a class="dropdown-item" href="#">Pizza</a></li>
-                            </ul>
-                        </li>
-                        <li class="nav-item"><a class="nav-link" href="#">Reviews</a></li>
+                        <li class="nav-item"><a class="nav-link" href="MainController">Home</a></li>                       
                     </ul>
                     <ul class="navbar-nav">
                         <li class="nav-item"><a class="nav-link" href="register.jsp">Register</a></li>
-                        <li class="nav-item"><a class="nav-link" href="#">Log in</a></li>
+                        <li class="nav-item"><a class="nav-link" href="login.jsp">Log in</a></li>
                     </ul>
                 </div>
             </div>
@@ -96,10 +85,11 @@
                         String Message = (String) request.getAttribute("Message") + "";
 
                     %>
-                    <%                                            if (Message != null && !Message.equals("null") && !Message.isEmpty()) {
+                    <%  
+                        if (Message != null && !Message.equals("null") && !Message.isEmpty()) {
                     %>
                     <div class="message">
-                        <div class="p-3 mb-2 bg-success text-white"><%= Message%></div>
+                        <div class="p-3 mb-2 bg-success text-white"><%=Message%></div>
                     </div>
                     <%
                         }

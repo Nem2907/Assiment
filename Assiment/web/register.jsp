@@ -1,6 +1,10 @@
 <%@page import="dto.UserDTO"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <!DOCTYPE html>
 <html lang="en">
+
+
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,7 +21,7 @@
                 border-radius: 10px;
                 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
             }
-            /* Ch? hi?n màu ?? khi input b? invalid */
+            /* Ch? hi?n mÃ u ?? khi input b? invalid */
             input:invalid {
                 border: 1px solid red;
             }
@@ -37,21 +41,21 @@
             //l?i confirm Password null
             String confirmPassword_ErrorMessage = request.getAttribute("confirmPassword_ErrorMessage") + "";
             confirmPassword_ErrorMessage = confirmPassword_ErrorMessage.equals("null") ? "" : confirmPassword_ErrorMessage;
-            //check l?i b? trùng id
+            //check l?i b? trÃ¹ng id
             String userName_ExisterrorMessage = (String) request.getAttribute("userName_ExisterrorMessage");
             if (userName_ExisterrorMessage == null) {
                 userName_ExisterrorMessage = "";
             }
-            //check l?i userName có b? null ko ?
+            //check l?i userName cÃ³ b? null ko ?
             String userName_ErrorMessage = request.getAttribute("userName_ErrorMessage") + "";
             userName_ErrorMessage = userName_ErrorMessage.equals("null") ? "" : userName_ErrorMessage;
-            //check password có ?? kı t? không
+            //check password cÃ³ ?? kÃ½ t? khÃ´ng
             String password_errorMessage = request.getAttribute("password_errorMessage") + "";
             password_errorMessage = password_errorMessage.equals("null") ? "" : password_errorMessage;
-            //check full Name có b? null ko
+            //check full Name cÃ³ b? null ko
             String fullname_errorMessage = request.getAttribute("fullname_errorMessage") + "";
             fullname_errorMessage = fullname_errorMessage.equals("null") ? "" : fullname_errorMessage;
-            //check s? di?n tho?i có b? sai form ko
+            //check s? di?n tho?i cÃ³ b? sai form ko
             String phoneNumber_errorMessage = request.getAttribute("phoneNumber_errorMessage") + "";
             phoneNumber_errorMessage = phoneNumber_errorMessage.equals("null") ? "" : phoneNumber_errorMessage;
             //ki?m tra gamil
@@ -62,6 +66,10 @@
             Email_ExisterrorMessage = Email_ExisterrorMessage.equals("null") ? "" : Email_ExisterrorMessage;
 
             String message = (String) request.getAttribute("Message");
+
+            
+
+
         %>
 
         <div class="container mt-5">
@@ -100,7 +108,7 @@
                             <br/>
                             <% if (!confirmPassword_ErrorMessage.isEmpty()) {%>
                             <span class="bg-danger text-white p-1 d-block"><%= confirmPassword_ErrorMessage%></span>
-                            <% } %>
+                            <% }%>
                         </div>
 
                         <div class="mb-3">
@@ -108,7 +116,7 @@
                             <input type="text" class="form-control" name="txtFullName" placeholder="Enter your full name">
                             <% if (!fullname_errorMessage.isEmpty()) {%>
                             <span class="bg-danger text-white p-1 d-block"><%= fullname_errorMessage%></span>
-                            <% } %>
+                            <% }%>
                         </div>
 
                         <div class="mb-3">
@@ -116,7 +124,7 @@
                             <input type="number" class="form-control" name="txtPhoneNumber" placeholder="Enter your phone number">
                             <% if (!phoneNumber_errorMessage.isEmpty()) {%>
                             <span class="bg-danger text-white p-1 d-block"><%= phoneNumber_errorMessage%></span>
-                            <% } %>
+                            <% }%>
                         </div>
 
                         <div class="mb-3">
@@ -137,13 +145,13 @@
                             <p>Already have an account? <a href="login.jsp" class="btn btn-info">Login Here!</a></p>
                         </div>
                     </form>
-                        <%
-                            if (message != null && !message.trim().isEmpty()) {
-                        %>
-                        <span class="bg-success text-white p-1 d-block"><%= message%></span>
-                        <%
-                            }
-                        %>
+                    <%
+                        if (message != null && !message.trim().isEmpty()) {
+                    %>
+                    <span class="bg-success text-white p-1 d-block"><%= message%></span>
+                    <%
+                        }
+                    %>
                 </div>
             </div>
         </div>

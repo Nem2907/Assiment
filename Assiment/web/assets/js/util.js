@@ -69,3 +69,8 @@ function actionProduct(event, element, actionType, productId) {
     form.submit(); // Gửi form
 }
 
+
+
+
+
+

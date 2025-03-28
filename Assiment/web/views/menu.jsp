@@ -1,7 +1,7 @@
 <%-- 
     Document   : menu
     Created on : Mar 17, 2025, 9:18:19 PM
-    Author     : PhamBaoPhi
+    Author     : Nguyen
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
@@ -15,20 +15,20 @@
                     <a class="nav-link" href="manager">Manager Product</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="logout">Logout</a>
+                    <a class="btn btn-danger text-white" href="logout">Logout</a>
                 </li>
             </c:if>   
             <c:if test="${sessionScope.account.getRole() eq 'user'}">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Hello ${sessionScope.account.getFullName()}</a>
+                    <a class="nav-link" href="OrderController">Hello <b>${sessionScope.account.getFullName()}</b></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="logout">Logout</a>
+                    <a class="btn btn-danger text-white" href="logout">Logout</a>
                 </li>
             </c:if>
             <c:if test="${sessionScope.account == null}">
                 <li class="nav-item">
-                    <a class="nav-link" href="login.jsp">Login</a>
+                    <a class="btn btn-primary text-white" href="login.jsp">Login</a>
                 </li>
             </c:if>
         </ul>

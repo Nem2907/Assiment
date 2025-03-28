@@ -23,7 +23,7 @@ import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author PhamBaoPhi
+ * @author
  */
 public class ManagerController extends HttpServlet {
 
@@ -74,7 +74,7 @@ public class ManagerController extends HttpServlet {
         HttpSession se = request.getSession();
         //ktr user
         UserDTO ac = (UserDTO) se.getAttribute("account");
-        if (ac == null) {
+        if (ac == null && ac.getRole().equalsIgnoreCase("admin")) {
             response.sendRedirect("login.jsp");
             return;
         }
@@ -124,6 +124,13 @@ public class ManagerController extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         response.setContentType("text/html;charset=UTF-8");
         try {
+            HttpSession session = request.getSession();
+            UserDTO ac = (UserDTO) session.getAttribute("account");
+            System.out.println(ac);
+            if (ac == null || !ac.getRole().equalsIgnoreCase("admin")) {
+                response.sendRedirect("MainController"); // Chuyển về trang chính
+                return;
+            }
             String action = request.getParameter("action");
             if (action == null) {
                 //return về trang add

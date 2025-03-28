@@ -5,8 +5,11 @@
  */
 package controller;
 
+import dao.ProductDAO;
+import dto.ProductDTO;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +39,7 @@ public class LogOutController extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet LogOutController</title>");            
+            out.println("<title>Servlet LogOutController</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet LogOutController at " + request.getContextPath() + "</h1>");
@@ -59,8 +62,14 @@ public class LogOutController extends HttpServlet {
             throws ServletException, IOException {
         //xóa cái acc trên session:
         HttpSession sess = request.getSession();
-        sess.removeAttribute("account");
-        response.sendRedirect("login.jsp");
+        sess.invalidate(); // Xóa toàn bộ session
+
+        // Chuyển hướng về trang home.jsp
+        response.sendRedirect("MainController");
+        ProductDAO pdao = new ProductDAO();
+         // Lấy danh sách sản phẩm từ database
+        List<ProductDTO> productList = pdao.readAll();
+        request.setAttribute("listProduct", productList);
     }
 
     /**

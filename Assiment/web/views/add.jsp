@@ -1,4 +1,5 @@
 
+<%@page import="dto.UserDTO"%>
 <%-- 
     Document   : home
     Created on : Mar 10, 2025, 1:57:28 PM
@@ -15,6 +16,16 @@
         <link href="${pageContext.request.contextPath}/assets/css/style-add.css" rel="stylesheet" type="text/css">
     </head>
     <body>
+        <%
+            // Lấy session
+            UserDTO user = (UserDTO) session.getAttribute("account");
+
+            // Nếu chưa đăng nhập hoặc không phải admin, chuyển về menu.jsp
+            if (user == null || !"admin".equalsIgnoreCase(user.getRole())) {
+                response.sendRedirect(request.getContextPath() + "/MainController");
+                return;
+            }
+        %>
         <div class="container">
             <h2>Add Product</h2>
             <form action="${pageContext.request.contextPath}/manager?action=add" method="POST">

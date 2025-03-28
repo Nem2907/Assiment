@@ -81,14 +81,17 @@
                             <ul class="list-unstyled mb-4">
                                 <li class="d-flex justify-content-between py-3 border-bottom">
                                     <strong class="text-muted">Total Money: </strong>
-                                    <h5 class="font-weight-bold">${requestScope.totalAllProduct} Dollar</h5>
+                                    <h5 class="font-weight-bold"> 
+                                        ${requestScope.totalAllProduct} Dollar</h5>
                                 </li>
                             </ul>
-                            <form action="" method="">
-                                <input style="display: none" name="productId" type="number" value="${pDetail.getproductID()}" readonly>
-                                <input href="buy" class="btn btn-dark rounded-pill py-2 btn-block" value="Purchase"></input>
+                            <form action="cart" method="POST">
+                                <input type="hidden" name="action" value="buy">
+                                <input type="hidden" name="productId" value="${pDetail.getProductID()}">
+                                <h3>Enter Shipping Address</h3>
+                                <input type="text" id="shipAddress" name="shipAddress" class="input-field" required placeholder="Enter your address">
+                                <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Purchase</button>
                             </form>
-
                         </div>
                     </div>
                 </div>

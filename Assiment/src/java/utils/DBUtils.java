@@ -19,14 +19,14 @@ import java.util.logging.Logger;
  */
 public class DBUtils {
 
-    private static final String DB_NAME = "Assigment";//Fast_Food_Online
+    private static final String DB_NAME = "PizzaStoreDB";//Fast_Food_Online
     private static final String DB_username = "sa";
     private static final String DB_password = "12345";
 
     public static Connection getConnection() throws SQLException, ClassNotFoundException {
         Connection conn = null;
         Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-        String url = "jdbc:sqlserver://localhost:1433;databaseName=" + DB_NAME + ";encrypt=false;trustServerCertificate=true;";
+        String url = "jdbc:sqlserver://localhost:1433;databaseName=" + DB_NAME + ";encrypt=false;trustServerCertificate=true;useUnicode=true;characterEncoding=UTF-8";
         conn = DriverManager.getConnection(url, DB_username, DB_password);
         return conn;
     }
